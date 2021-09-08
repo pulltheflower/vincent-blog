@@ -155,3 +155,76 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
     
 }
 ```
+
+
+3. 给定一个字符串 `s` ，请你找出其中不含有重复字符的 `最长子串` 的长度。
+
+ 
+
+示例 1:
+
+```
+输入: s = "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+```
+示例 2:
+
+```
+输入: s = "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+```
+示例 3:
+
+```
+输入: s = "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+```
+示例 4:
+```
+输入: s = ""
+输出: 0
+```
+
+提示：
+
+* `0 <= s.length <= 5 * 104`
+* `s 由英文字母、数字、符号和空格组成`
+
+我的答案
+
+```go
+func lengthOfLongestSubstring(s string) int {
+    // 指定窗口结束标志为-1，表示还没有开始移动，在字符串数组最左侧
+    // 指定最长字串长度为0
+    end, wordsLength := -1, 0
+    // 使用words map记录滑窗过程中每个字符的出现次数
+    words := map[byte]int{}
+
+    for i := 0; i < len(s); i ++ {
+        // 如果左边界超过0，则删除对左边字符数量的统计
+        if i != 0 {
+            delete(words, s[i - 1])
+        }
+
+        for end + 1 < len(s) && words[s[end + 1]] == 0{
+            words[s[end + 1]] ++
+            end ++
+        }
+
+        wordsLength = max(wordsLength, end + 1 - i)
+    }
+    return wordsLength
+}
+
+
+func max(x, y int) int {
+    if x < y {
+        return y
+    }
+    return x
+}
+```
