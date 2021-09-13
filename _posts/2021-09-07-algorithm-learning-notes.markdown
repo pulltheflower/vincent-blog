@@ -461,3 +461,27 @@ func mergeTwoArr(left, right []int) []int {
 	return res
 }
 ```
+
+
+7. 计数排序(counting sort)
+
+计数排序是使用一个 `map` 来记录每个元素出现次数，然后再遍历输出数组的一种排序方式，这种排序的方式要知道这个数组中数据的值的范围
+
+```go
+func countingSort(arr []int) []int {
+	var res []int
+	var counterMap = make(map[int]int)
+	for i := 0; i < len(arr); i ++ {
+		counterMap[arr[i]] += 1
+	}
+
+	for j := 0; j <= len(counterMap); j ++ {
+		for counterMap[j] > 0 {
+			res = append(res, j)
+			counterMap[j]--
+		}
+	}
+	return res
+
+}
+```
