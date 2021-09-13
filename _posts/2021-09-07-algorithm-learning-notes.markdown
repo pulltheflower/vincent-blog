@@ -394,3 +394,70 @@ func quickySort(nums []int, start, end int) {
 }
 
 ```
+
+5. 希尔排序(shellSort)
+
+
+希尔排序是一种优化了的插入排序，通过把数据分成间距相等的几组，然后进行插入排序，通过不断缩小间距，最后将整个数组排序。通过将数组长度除以 `2` 来获得一个间距 `h` ，从下标为 `h` 的元素开始进行遍历，每次和自己 `h` 之前的元素作插入排序。
+
+```go
+func shellSort(arr []int) {
+	arrLen := len(arr)
+
+	if arrLen <= 1 {
+		return
+	}
+
+	for h := arrLen / 2; h >= 1; h /= 2 {
+		for i := h; i < arrLen; i ++ {
+			currentIVal := arr[i]
+			j := i
+			for ; j - h >=0 && arr[j - h] > currentIVal; {
+				arr[j] = arr[j - h]
+				j -= h
+			}
+			arr[j] = currentIVal
+		}
+	}
+}
+```
+
+
+6. 归并排序
+
+归并排序是通过将一个数组分成两半，然后排序之后再合并的一种算法，通过递归调用 `mergeSort` 来达到排序的目的
+
+```go
+func mergeSort(arr []int) []int{
+	arrLen := len(arr)
+
+	if arrLen <= 1 {
+		return arr
+	}
+
+	i := arrLen / 2
+	leftArray := mergeSort(arr[0:i])
+	rightArray := mergeSort(arr[i:])
+	return mergeTwoArr(leftArray, rightArray)
+}
+
+func mergeTwoArr(left, right []int) []int {
+	m, n := len(left), len(right)
+
+	i, j := 0, 0
+	var res []int
+	for i < m && j < n {
+		if left[i] < right[j] {
+			res = append(res, left[i])
+			i ++
+		}else {
+			res = append(res, right[j])
+			j ++
+		}
+	}
+	res = append(res, left[i:]...)
+	res = append(res, right[j:]...)
+
+	return res
+}
+```
