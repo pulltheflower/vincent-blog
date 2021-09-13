@@ -297,3 +297,100 @@ func findPlalindrome(s string, left, right int) (int, int) {
     return left + 1, right - 1
 }
 ```
+
+
+#### 排序算法
+
+1. 冒泡排序 时间复杂度O(n2)
+
+冒泡排序是比较简单的一种排序，从第`1`个元素开始，和第`2`个元素对比，如果第`1`个元素比第`2`个元素大，那么就交换两个元素，否则不做操作，然后第`2`个元素和第`3`个元素比较，如果第`2`个元素比第`3`个元素大，那么就交换两个元素，否则不做操作，以此类推。这样经过数据的两两比较，每第`i`次都会有一个在数组中第`(数组长度-i)`大的数字排到最后方，所以第`i`轮比较只需要比较`(数组长度-i)`的长度就好啦。
+```go
+func sortArray(nums []int) []int {
+    for i := 0; i < len(nums)-1; i ++ {
+        for j := 1; j < len(nums)-i; j ++ {
+            if nums[j] < nums[j-1] {
+                nums[j-1], nums[j] = nums[j], nums[j-1]
+            }
+        }
+    }
+    return nums
+}
+```
+
+2. 选择排序 时间复杂度O(n2)
+
+选择排序的思想和冒泡排序差不多，只不过是找到未排序数组中的最小值，插入到数组未排序部分的最前方
+
+```go
+func sortArray(nums []int) []int {
+    for i := 0; i < len(nums); i ++ {
+        min := i
+        for j := i+1; j < len(nums); j ++ {
+            if nums[min] > nums[j] {
+                min = j
+            }
+        }
+        if min != i {
+            nums[i], nums[min] = nums[min], nums[i]
+        }
+    }
+    return nums
+}
+```
+
+3. 插入排序 时间复杂度O(n2)
+
+插入排序的思想是，从第`2`个元素开始，依次将此元素和它前边的元素进行比较，如果前边元素比它大，那么就将比它大的这个元素后移一位，直到第`i`个元素比它小，此时将`i+1`的值置为它
+
+```go
+func sortArray(nums []int) []int {
+    for i := 1; i < len(nums); i ++ {
+        num := nums[i]
+        j := i - 1
+        for ;j >=0 &&  nums[j] > num; {
+            nums[j + 1] = nums[j]
+            j --
+            
+        } 
+        nums[j + 1] = num
+    }
+    return nums
+}
+```
+
+4. 快速排序，时间复杂度O(nlogn),最差情况时间复杂度扔趋于O(n2)
+
+快速排序的思想是选定数组中的一个元素称之为 `pivot` ，将这个元素和最后一个元素调换位置，然后按照这个元素的值为基准，从第1个元素开始，依次和 `pivot` 的值进行比较，比较需要维护两个指针 `start` 和 `end`, 若当前元素的索引是 `i`，则 `start` 初始值为 `i - 1` , `end` 初始值为 `i` ,然后 `end` 的值持续增长。使用数组下标为 `i` 的元素和 `pivot` 进行比较，若小于 `pivot`，将下标为 `i` 的元素和下标为 `start + 1` 的元素互换位置并将 `start` 的值置为 `i`；若大于 `pivot` 的值，不做任何操作；最后将下标为 `start + 1` 和数组最后一个元素互换位置并标记 `start + 1` 为新的分割点，并将分割点左边的数组和右边的数组，再用递归的方式按如上方法进行排序，直到数组的长度为 `1`
+
+每次随机选择 `pivot` 会提高快速排序的速度
+
+```go
+func sortArray(nums []int) []int {
+    quickySort(nums, 0, len(nums)-1)
+    return nums
+}
+
+func findPivot(nums []int, start, end int) {
+    i := start
+    j := end - 1 
+    nums[i], nums[j] = nums[j], nums[i]
+}
+
+func quickySort(nums []int, start, end int) {
+    if start >= end{
+        return
+    }
+    findPivot(nums, start, end)
+    index := start - 1
+    for i := start; i < end; i ++ {
+        if nums[i] < nums[end] {
+            nums[index+1], nums[i] = nums[i], nums[index+1]
+            index++
+        }
+    }
+    nums[index+1], nums[end] = nums[end], nums[index+1]
+    quickySort(nums, start, index)
+    quickySort(nums, index+2, end)
+}
+
+```
