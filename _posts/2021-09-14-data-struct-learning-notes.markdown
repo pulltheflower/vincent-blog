@@ -30,7 +30,7 @@ type SingleData struct {
 // 单链表节点
 
 type SingleNode struct {
-    Data SingleObject
+    Data SingleData
     Next *SingleNode
 }
 
@@ -163,6 +163,28 @@ func (list *SingleList) Get(index uint) *SingleNode {
         node = node.Next
     }
     return node
+}
+
+// 通过 key 获取 value
+
+func (list *SingleList) GetValueByKey(key string) string {
+    if list == nil || list.Size == 0 {
+        return ""
+    }
+    list.mutex.RLock()
+    defer list.mutex.RUnlock()
+
+    head := list.Head
+    if head.Data.Key == key {
+        return head.Data.Value
+    }
+    for head.Next != nil {
+        if head.Next.Data.Key == key {
+            return head.Next.Data.Value
+        }
+        head = head.Next
+    }
+    return ""
 }
 
 // 打印链表
