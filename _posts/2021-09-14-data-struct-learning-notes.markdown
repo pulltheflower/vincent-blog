@@ -208,10 +208,10 @@ func (list *SingleList) Display() {
 }
 
 func main() {
-	  list := new(SingleList)
-	  list.Init()
-	  node := &SingleNode{Data: &SingleData{Key: "test", Value: "test"}}
-	  list.Append(node)
+    list := new(SingleList)
+    list.Init()
+    node := &SingleNode{Data: &SingleData{Key: "test", Value: "test"}}
+    list.Append(node)
     list.Display()
 }
 ```
