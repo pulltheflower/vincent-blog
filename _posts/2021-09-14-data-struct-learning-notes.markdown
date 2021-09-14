@@ -212,6 +212,10 @@ func main() {
     list.Init()
     node := &SingleNode{Data: &SingleData{Key: "test", Value: "test"}}
     list.Append(node)
+    node1 := &SingleNode{Data: SingleData{Key: "key", Value: "value"}}
+    list.Append(node1)
+    value := list.GetValueByKey("key")
+    fmt.Println(value)
     list.Display()
 }
 ```
